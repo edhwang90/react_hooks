@@ -1,64 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { fetchEmails, fetchLatestEmails } from '../FakeAPI';
 import { withNotifier } from './NotificationContext';
+import { UserContext } from './UserContext';
 
 const EmailContext = React.createContext();
 
-class EmailProvider extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      emails: [],
-      currentEmail: null,
-      error: null,
-      loading: false,
-      onSelectEmail: this.handleSelectEmail
-    };
-  }
+const EmailProvider = (props) => {
+  const [emails, setEmails] = useState([]);
+  const [currentEmail, setCurrentEmail] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  componentDidMount() {
-    this.setState({ loading: true, error: null });
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    setLoading(true);
+
     fetchEmails()
-      .then(emails =>
-        this.setState({ loading: false, emails })
+      .then(emails => {
+        setLoading(false);
+        setEmails(emails);
+      }
       )
-      .catch(error =>
-        this.setState({ loading: false, error })
-      );
-    this.refreshInterval = setInterval(this.refresh, 2000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.refreshInterval);
-  }
-
-  refresh = () => {
-    if (!this.state.loading) {
-      fetchLatestEmails().then(emails => {
-        if (emails.length > 0) {
-          this.setState(state => ({
-            emails: state.emails.concat(emails)
-          }));
-          // notify!
-          this.props.notify(
-            `${emails.length} more emails arrived`
-          );
-        }
+      .catch(error => {
+        setLoading(false);
+        setError(error);
       });
+  }, [])
+
+  useEffect(() => {
+    const refresh = () => {
+      if (!loading) {
+        fetchLatestEmails().then(res => {
+          if (emails.length > 0) {
+            setEmails(emails.concat(res));
+
+            props.notify(
+              `${res.length} more emails arrived`
+            );
+          }
+        });
+      }
+    };
+
+    let refreshInterval = setInterval(refresh, 5000);
+
+    return () => {
+      clearInterval(refreshInterval);
     }
+  }, [emails]);
+
+  const handleSelectEmail = email => {
+    setCurrentEmail(email);
   };
 
-  handleSelectEmail = email => {
-    this.setState({ currentEmail: email });
-  };
-
-  render() {
-    return (
-      <EmailContext.Provider value={this.state}>
-        {this.props.children}
-      </EmailContext.Provider>
-    );
+  const initialConfig = {
+    emails,
+    currentEmail,
+    error,
+    loading,
+    onSelectEmail: handleSelectEmail
   }
+
+  return (
+    <EmailContext.Provider value={initialConfig}>
+      {props.children}
+    </EmailContext.Provider>
+  );
 }
 
 const Wrapped = withNotifier(EmailProvider);

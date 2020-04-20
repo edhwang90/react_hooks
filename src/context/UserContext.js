@@ -1,34 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FAKE_USER } from '../FakeAPI';
 
-let UserContext;
-const { Provider } = UserContext = React.createContext();
+const UserContext = React.createContext();
 
-class UserProvider extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: FAKE_USER,
-      onLogin: this.handleLogin,
-      onLogout: this.handleLogout
-    };
-  }
+const UserProvider = (props) => {
 
-  handleLogin = user => {
-    this.setState({ user: user });
+  const [user, setUser] = useState(FAKE_USER);
+
+  const handleLogin = user => {
+    setUser(user);
   };
 
-  handleLogout = () => {
-    this.setState({ user: null });
+  const handleLogout = () => {
+    setUser(null);
   };
 
-  render() {
-    return (
-      <Provider value={this.state}>
-        {this.props.children}
-      </Provider>
-    );
+  const initialConfig = {
+    user,
+    onLogin: handleLogin,
+    onLogout: handleLogout
   }
+
+  return (
+    <UserContext.Provider value={initialConfig}>
+      {props.children}
+    </UserContext.Provider>
+  );
 }
 
 export { UserProvider, UserContext };

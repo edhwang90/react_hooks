@@ -21,7 +21,7 @@ export const Menu = () => {
 
     document.addEventListener('click', hideMenu);
     return () => document.removeEventListener('click', hideMenu);
-  });
+  }, [menuRef]);
 
   const { user, onLogout } = useContext(UserContext);
 
