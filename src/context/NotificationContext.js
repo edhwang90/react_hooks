@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-let NotificationContext;
-const { Provider, Consumer } = NotificationContext = React.createContext();
+const NotificationContext = React.createContext();
 
 class NotificationProvider extends React.Component {
   constructor(props) {
@@ -52,7 +51,7 @@ class NotificationProvider extends React.Component {
 
   render() {
     return (
-      <Provider value={this.state}>
+      <NotificationContext.Provider value={this.state}>
         <div className="notification-wrapper">
           <ul>
             {this.state.messages.map(message => (
@@ -65,7 +64,7 @@ class NotificationProvider extends React.Component {
           </ul>
           {this.props.children}
         </div>
-      </Provider>
+      </NotificationContext.Provider>
     );
   }
 }
@@ -79,21 +78,15 @@ const Notification = ({ message, onClose }) => (
   </li>
 );
 
-function withNotifier(Component) {
-  return function Notified(props) {
-    return (
-      <Consumer>
-        {({ notify }) => (
-          <Component {...props} notify={notify} />
-        )}
-      </Consumer>
-    );
-  };
+const withNotifier = (ComponentToWrap) => props => {
+  const { notify } = useContext(NotificationContext);
+  return (
+    <ComponentToWrap {...props} notify={notify} />
+  )
 }
 
 export {
   NotificationProvider,
-  Consumer as Notifier,
   NotificationContext,
   withNotifier
 };

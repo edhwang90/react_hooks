@@ -1,7 +1,9 @@
 import React from 'react';
-import { UserConsumer } from '../../context/UserContext';
+import { UserContext } from '../../context/UserContext';
 
 export class Menu extends React.Component {
+  static contextType = UserContext;
+
   state = {
     menuVisible: false
   };
@@ -31,27 +33,25 @@ export class Menu extends React.Component {
   };
 
   render() {
+    const { user, onLogout } = this.context;
+
     return (
-      <UserConsumer>
-        {({ user, onLogout }) => (
-          <div className="UserMenu">
-            <img
-              className="UserAvatar"
-              alt="User avatar"
-              src={user.avatar}
-              onClick={this.toggleMenu}
-              ref={this.avatarRef}
-            />
-            {
-              this.state.menuVisible && (
-                <ul>
-                  <li onClick={onLogout}>Logout</li>
-                </ul>
-              )
-            }
-          </div>
-        )}
-      </UserConsumer>
+      <div className="UserMenu">
+        <img
+          className="UserAvatar"
+          alt="User avatar"
+          src={user.avatar}
+          onClick={this.toggleMenu}
+          ref={this.avatarRef}
+        />
+        {
+          this.state.menuVisible && (
+            <ul>
+              <li onClick={onLogout}>Logout</li>
+            </ul>
+          )
+        }
+      </div>
     );
   }
 }

@@ -31,4 +31,4 @@ class UserProvider extends React.Component {
   }
 }
 
-export { UserProvider, Consumer as UserConsumer, UserContext };
+export { UserProvider, UserContext };

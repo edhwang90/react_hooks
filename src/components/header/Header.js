@@ -4,6 +4,7 @@ import { EmailContext } from '../../context/EmailContext';
 
 export const Header = () => {
   const { emails } = useContext(EmailContext);
+  
   return (
     <header className="Header">
       <div>

@@ -46,7 +46,7 @@ FAKE_EMAILS.forEach(
 export const login = (username, password) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (username === 'ed' && password === 'secret') {
+      if (username === 'ed' && password === 'password') {
         resolve(FAKE_USER);
       } else {
         reject({ message: 'Invalid username or password' });

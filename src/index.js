@@ -8,7 +8,6 @@ import { UserContext } from './context/UserContext';
 import { UserProvider, UserConsumer } from './context/UserContext';
 import { EmailProvider } from './context/EmailContext';
 import { NotificationProvider } from './context/NotificationContext';
-import { FAKE_USER } from './FakeAPI';
 
 import './index.scss';
 
@@ -25,6 +24,7 @@ const Root = () => {
     </React.Fragment>
   )
 }
+
 ReactDOM.render(
   <React.StrictMode>
     <NotificationProvider>

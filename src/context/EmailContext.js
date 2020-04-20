@@ -2,8 +2,7 @@ import React from 'react';
 import { fetchEmails, fetchLatestEmails } from '../FakeAPI';
 import { withNotifier } from './NotificationContext';
 
-let EmailContext;
-const { Provider, Consumer } = EmailContext = React.createContext();
+const EmailContext = React.createContext();
 
 class EmailProvider extends React.Component {
   constructor(props) {
@@ -55,9 +54,9 @@ class EmailProvider extends React.Component {
 
   render() {
     return (
-      <Provider value={this.state}>
+      <EmailContext.Provider value={this.state}>
         {this.props.children}
-      </Provider>
+      </EmailContext.Provider>
     );
   }
 }
@@ -66,6 +65,5 @@ const Wrapped = withNotifier(EmailProvider);
 
 export {
   Wrapped as EmailProvider,
-  Consumer as EmailConsumer,
   EmailContext
 };

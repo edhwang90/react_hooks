@@ -1,8 +1,9 @@
 import React, { useContext} from 'react';
 import { login } from '../../FakeAPI';
-import { UserConsumer, UserContext } from '../../context/UserContext';
+import { UserContext } from '../../context/UserContext';
 
 export class Login extends React.Component {
+  static contextType = UserContext;
   state = {
     error: null,
     loading: false,
@@ -29,37 +30,34 @@ export class Login extends React.Component {
 
   render() {
     const { username, password, error, loading } = this.state;
-    //const { onLogin } = useContext(UserContext);
+    const { onLogin } = this.context;
+    
     return (
-      <UserConsumer>
-        {({ onLogin }) => (
-          <div className="LoginPage">
-            <form onSubmit={e => this.handleSubmit(e, onLogin)}>
-              <label>
-                Username
-                <input
-                  name="username"
-                  value={username}
-                  onChange={this.handleInputChange}
-                />
-              </label>
-              <label>
-                Password
-                <input
-                  name="password"
-                  type="password"
-                  value={password}
-                  onChange={this.handleInputChange}
-                />
-              </label>
-              {error && <div className="error">{error.message}</div>}
-              <button type="submit" disabled={loading}>
-                Sign In
-              </button>
-            </form>
-          </div>
-        )}
-      </UserConsumer>
+      <div className="LoginPage">
+        <form onSubmit={e => this.handleSubmit(e, onLogin)}>
+          <label>
+            Username
+            <input
+              name="username"
+              value={username}
+              onChange={this.handleInputChange}
+            />
+          </label>
+          <label>
+            Password
+            <input
+              name="password"
+              type="password"
+              value={password}
+              onChange={this.handleInputChange}
+            />
+          </label>
+          {error && <div className="error">{error.message}</div>}
+          <button type="submit" disabled={loading}>
+            Sign In
+          </button>
+        </form>
+      </div>
     );
   }
 }
