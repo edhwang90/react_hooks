@@ -1,63 +1,57 @@
-import React, { useContext} from 'react';
+import React, { useContext, useState } from 'react';
 import { login } from '../../FakeAPI';
 import { UserContext } from '../../context/UserContext';
 
-export class Login extends React.Component {
-  static contextType = UserContext;
-  state = {
-    error: null,
-    loading: false,
-    username: '',
-    password: ''
-  };
+export const Login = () => {
 
-  handleInputChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  handleSubmit = (e, onLogin) => {
+  const handleSubmit = (e, onLogin) => {
     e.preventDefault();
-    this.setState({ loading: true, error: null });
-    login(this.state.username, this.state.password)
+
+    setLoading(true);
+    
+    login(username, password)
       .then(user => {
-        this.setState({ loading: false });
+        setLoading(false);
         onLogin(user);
       })
-      .catch(error => this.setState({ error, loading: false }));
+      .catch(error => {
+        setError(error);
+        setLoading(false);
+      })
   };
 
-  render() {
-    const { username, password, error, loading } = this.state;
-    const { onLogin } = this.context;
-    
-    return (
-      <div className="LoginPage">
-        <form onSubmit={e => this.handleSubmit(e, onLogin)}>
-          <label>
-            Username
-            <input
-              name="username"
-              value={username}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <label>
-            Password
-            <input
-              name="password"
-              type="password"
-              value={password}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          {error && <div className="error">{error.message}</div>}
-          <button type="submit" disabled={loading}>
-            Sign In
-          </button>
-        </form>
-      </div>
-    );
-  }
+  const { onLogin } = useContext(UserContext);
+
+  return (
+    <div className="LoginPage">
+      <form onSubmit={e => handleSubmit(e, onLogin)}>
+        <label>
+          Username
+          <input
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </label>
+        <label>
+          Password
+          <input
+            name="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        {error && <div className="error">{error.message}</div>}
+        <button type="submit" disabled={loading}>
+          Sign In
+        </button>
+      </form>
+    </div>
+  );
 }

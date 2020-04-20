@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import App from './App';
 import { Login } from './components/login';
 import { UserContext } from './context/UserContext';
-import { UserProvider, UserConsumer } from './context/UserContext';
+import { UserProvider } from './context/UserContext';
 import { EmailProvider } from './context/EmailContext';
 import { NotificationProvider } from './context/NotificationContext';
 

@@ -1,57 +1,46 @@
-import React from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../context/UserContext';
 
-export class Menu extends React.Component {
-  static contextType = UserContext;
+export const Menu = () => {
 
-  state = {
-    menuVisible: false
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const menuRef = useRef(null);
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
   };
 
-  avatarRef = React.createRef();
+  useEffect(() => {
+    const hideMenu = e => {
+      if (menuRef.current.contains(e.target)) {
+        return;
+      }
+      setMenuVisible(false);
+    };
 
-  componentDidMount() {
-    document.addEventListener('click', this.hideMenu);
-  }
+    document.addEventListener('click', hideMenu);
+    return () => document.removeEventListener('click', hideMenu);
+  });
 
-  componentWillUnmount() {
-    document.removeEventListener('click', this.hideMenu);
-  }
+  const { user, onLogout } = useContext(UserContext);
 
-  hideMenu = e => {
-    // Ignore clicks on the avatar
-    // so that the menu can open
-    if (e.target !== this.avatarRef.current) {
-      this.setState({ menuVisible: false });
-    }
-  };
-
-  toggleMenu = () => {
-    this.setState(state => ({
-      menuVisible: !state.menuVisible
-    }));
-  };
-
-  render() {
-    const { user, onLogout } = this.context;
-
-    return (
-      <div className="UserMenu">
-        <img
-          className="UserAvatar"
-          alt="User avatar"
-          src={user.avatar}
-          onClick={this.toggleMenu}
-          ref={this.avatarRef}
-        />
-        {
-          this.state.menuVisible && (
-            <ul>
-              <li onClick={onLogout}>Logout</li>
-            </ul>
-          )
-        }
-      </div>
-    );
-  }
+  return (
+    <div className="UserMenu">
+      <img
+        className="UserAvatar"
+        alt="User avatar"
+        src={user.avatar}
+        onClick={toggleMenu}
+        ref={menuRef}
+      />
+      {
+        menuVisible && (
+          <ul>
+            <li onClick={onLogout}>Logout</li>
+          </ul>
+        )
+      }
+    </div>
+  );
 }
