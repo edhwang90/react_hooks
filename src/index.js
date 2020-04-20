@@ -1,12 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import App from './App';
+import { Login } from './components/login';
+import { UserContext } from './context/UserContext';
+import { UserProvider, UserConsumer } from './context/UserContext';
+import { EmailProvider } from './context/EmailContext';
+import { NotificationProvider } from './context/NotificationContext';
+import { FAKE_USER } from './FakeAPI';
+
+import './index.scss';
+
+const Root = () => {
+ const { user } = useContext(UserContext);
+
+  return (
+    <React.Fragment>
+      { 
+        user 
+        ? (<App />) 
+        : (<Login />)
+      }
+    </React.Fragment>
+  )
+}
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <NotificationProvider>
+      <UserProvider>
+        <EmailProvider>
+          <Root />
+        </EmailProvider>
+      </UserProvider>
+     </NotificationProvider> 
   </React.StrictMode>,
   document.getElementById('root')
 );
