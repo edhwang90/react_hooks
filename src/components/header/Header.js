@@ -1,19 +1,28 @@
 import React, { useContext } from 'react';
 import { Menu } from './Menu';
 import { EmailContext } from '../../context/EmailContext';
+import styled from 'styled-components';
+
+const Top = styled.header`
+  position: sticky;
+  top: 0;
+  padding: 15px 20px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 export const Header = () => {
   const { emails } = useContext(EmailContext);
-  
+
   return (
-    <header className="Header">
+    <Top>
       <div>
         <h2>MyMail</h2>
-        <div className="emails">
-          {emails.length} emails
-        </div>
+        <span>{emails.length} emails</span>
       </div>
       <Menu />
-    </header>
+    </Top>
   )
 }

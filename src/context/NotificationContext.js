@@ -1,4 +1,29 @@
 import React, { useContext, useState, useEffect } from 'react';
+import styled from 'styled-components';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+
+const Wrapper = styled.ul`
+  position: absolute;
+  top: 0;
+  right: 20px;
+  z-index: 2;
+
+  li {
+    padding: 5px 20px;
+    margin-top: 15px;
+    background-color: #f7f7f7;
+  }
+  button {
+    border: none;
+    margin-left: 20px;
+    background-color: #dc3545;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+`;
 
 const NotificationContext = React.createContext();
 
@@ -44,7 +69,7 @@ const NotificationProvider = (props) => {
   return (
     <NotificationContext.Provider value={initialConfig}>
       <div className="notification-wrapper">
-        <ul>
+        <Wrapper>
           {messages.map((message, key) => (
             <Notification
               key={key}
@@ -52,18 +77,20 @@ const NotificationProvider = (props) => {
               onClose={() => removeMessage(message)}
             />
           ))}
-        </ul>
+        </Wrapper>
         {props.children}
       </div>
     </NotificationContext.Provider>
   );
 }
 
+
+
 const Notification = ({ message, onClose }) => (
   <li>
     {message.text}
-    <button className="close" onClick={onClose}>
-      &times;
+    <button onClick={onClose}>
+      <FontAwesomeIcon icon={faTimes} />
     </button>
   </li>
 );

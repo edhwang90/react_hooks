@@ -2,12 +2,38 @@ import React, { useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { EmailContext } from '../../context/EmailContext';
 
+import styled from 'styled-components';
+
+const EmailList = styled.div`
+  li {
+    padding: 15px 20px;
+    border-bottom: 2px solid #fff;
+    cursor: pointer;    
+  }
+
+  li:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    cursor: pointer;   
+  }
+
+  .no-messages {
+    padding: 15px 20px;
+    text-align: center;
+  }
+`;
+
 export const MessageList = () => {
   const { user } = useContext(UserContext);
   const { loading, emails, onSelectEmail } = useContext(EmailContext);
   
   return (
-    <div className="MessageList">
+    <EmailList>
       { 
         loading 
         ? (<div className="no-messages">Loading...</div>) 
@@ -29,13 +55,13 @@ export const MessageList = () => {
           </ul>
           )
         }
-    </div>
+    </EmailList>
   )
 }
 
 const Email = React.memo(({ email, onClick }) => (
   <li onClick={() => onClick(email)}>
-    <div className="subject">{email.subject}</div>
-    <div className="preview">{email.preview}</div>
+    <label>{email.subject}</label>
+    <p>{email.preview}</p>
   </li>
 ));

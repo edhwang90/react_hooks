@@ -9,8 +9,6 @@ import { UserProvider } from './context/UserContext';
 import { EmailProvider } from './context/EmailContext';
 import { NotificationProvider } from './context/NotificationContext';
 
-import './index.scss';
-
 const Root = () => {
  const { user } = useContext(UserContext);
 
