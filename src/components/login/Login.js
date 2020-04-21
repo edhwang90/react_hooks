@@ -13,7 +13,6 @@ const Content = styled.section`
 
   label, input, button {
     display: block;
-    padding: 10px 15px;
     font-size: 1.5em;
   }
 
@@ -28,19 +27,19 @@ const Content = styled.section`
 
   input {
     border: none;
-    background-color: #f7f7f7;
+    background-color: ${ props => props.theme.bg };
   }
 
   button {
     border: none;
-    background-color: #007bff;
-    color: #fff;
+    background-color: ${ props => props.theme.primary };
+    color: ${ props => props.theme.primaryfc};
     width: 100%;
     margin-top: 50px;
   }
 
   .error {
-    color: red;
+    color: ${ props => props.theme.error };
     margin-top: 10px;
   }
 `;
@@ -74,6 +73,7 @@ export const Login = () => {
       <form onSubmit={e => handleSubmit(e, onLogin)}>
         <label>Username</label>
         <input
+            className="action-p"
             name="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -81,13 +81,14 @@ export const Login = () => {
 
         <label>Password</label>
         <input
+            className="action-p"
             name="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         {error && <div className="error">{error.message}</div>}
-        <button type="submit" disabled={loading}>
+        <button className="action-p" type="submit" disabled={loading}>
           Sign In
         </button>
       </form>

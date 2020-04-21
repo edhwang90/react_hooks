@@ -6,7 +6,6 @@ import styled from 'styled-components';
 const Top = styled.header`
   position: sticky;
   top: 0;
-  padding: 15px 20px;
   background-color: #fff;
   display: flex;
   justify-content: space-between;
@@ -17,7 +16,7 @@ export const Header = () => {
   const { emails } = useContext(EmailContext);
 
   return (
-    <Top>
+    <Top className="content">
       <div>
         <h2>MyMail</h2>
         <span>{emails.length} emails</span>

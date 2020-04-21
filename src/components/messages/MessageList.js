@@ -6,14 +6,13 @@ import styled from 'styled-components';
 
 const EmailList = styled.div`
   li {
-    padding: 15px 20px;
     border-bottom: 2px solid #fff;
     cursor: pointer;    
   }
 
   li:hover {
-    background-color: #007bff;
-    color: #fff;
+    background-color: ${ props => props.theme.primary };
+    color: ${ props => props.theme.primaryfc };
   }
 
   label {
@@ -23,7 +22,6 @@ const EmailList = styled.div`
   }
 
   .no-messages {
-    padding: 15px 20px;
     text-align: center;
   }
 `;
@@ -36,10 +34,10 @@ export const MessageList = () => {
     <EmailList>
       { 
         loading 
-        ? (<div className="no-messages">Loading...</div>) 
+        ? (<div className="no-messages content">Loading...</div>) 
         : emails.length === 0 ? 
           (
-            <div className="no-messages">
+            <div className="no-messages content">
               Your mailbox is empty, {user.firstName}! 🎉
             </div>
           )
@@ -60,7 +58,7 @@ export const MessageList = () => {
 }
 
 const Email = React.memo(({ email, onClick }) => (
-  <li onClick={() => onClick(email)}>
+  <li className="content" onClick={() => onClick(email)}>
     <label>{email.subject}</label>
     <p>{email.preview}</p>
   </li>

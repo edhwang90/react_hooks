@@ -12,15 +12,15 @@ const MenuContainer = styled.div`
   button {
     border-radius: 50%;
     border-color: transparent;
-    background-color: #f7f7f7;
+    background-color: ${ props => props.theme.bg };
     width: 50px;
     height: 50px;
     font-size: 1.5rem;
     cursor: pointer;
 
     &:hover {
-      background-color: #007bff;
-      color: #fff;
+      background-color: ${ props => props.theme.primary };
+      color: ${ props => props.theme.primaryfc };
     }
   }
 
@@ -30,16 +30,16 @@ const MenuContainer = styled.div`
     right: 0;
     list-style: none;
     min-width: 150px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: ${ props => props.theme.primary };
+    color: ${ props => props.theme.primaryfc };
   }
 
   a {
-    padding: 5px 10px;
     z-index: 2;
     display: block;
   }
 `;
+
 export const Menu = () => {
 
   const [menuVisible, setMenuVisible] = useState(false);
@@ -65,7 +65,7 @@ export const Menu = () => {
   const { onLogout } = useContext(UserContext);
 
   return (
-    <MenuContainer className="UserMenu">
+    <MenuContainer>
       <button
         className={ menuVisible ? 'active' : '' }
         onClick={toggleMenu}
@@ -80,7 +80,7 @@ export const Menu = () => {
       {
         menuVisible && (
           <ul>
-            <li><a onClick={onLogout}>Logout</a></li>
+            <li><a className="content" onClick={onLogout}>Logout</a></li>
           </ul>
         )
       }

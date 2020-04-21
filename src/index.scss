@@ -25,6 +25,22 @@ main {
   background-color: #f7f7f7;
 }
 
+.content {
+  padding: 15px 20px;
+}
+
+.content-mt {
+  margin-top: 15px;
+}
+
+.content-mb {
+  margin-bottom: 15px;
+}
+
+.action-p {
+  padding: 10px 15px;
+}
+
 .active {
   background-color: #007bff !important; // styled-components specificity
   color: #fff !important; // styled-components specificity

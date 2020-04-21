@@ -11,14 +11,13 @@ const Wrapper = styled.ul`
   z-index: 2;
 
   li {
-    padding: 5px 20px;
-    margin-top: 15px;
-    background-color: #f7f7f7;
+    background-color: ${ props => props.theme.bg };
   }
+
   button {
     border: none;
     margin-left: 20px;
-    background-color: #dc3545;
+    background-color: ${ props => props.theme.error };
     color: #fff;
     cursor: pointer;
     font-size: 1.2rem;
@@ -68,18 +67,16 @@ const NotificationProvider = (props) => {
 
   return (
     <NotificationContext.Provider value={initialConfig}>
-      <div className="notification-wrapper">
-        <Wrapper>
-          {messages.map((message, key) => (
-            <Notification
-              key={key}
-              message={message}
-              onClose={() => removeMessage(message)}
-            />
-          ))}
-        </Wrapper>
-        {props.children}
-      </div>
+      <Wrapper>
+        {messages.map((message, key) => (
+          <Notification
+            key={key}
+            message={message}
+            onClose={() => removeMessage(message)}
+          />
+        ))}
+      </Wrapper>
+      {props.children}
     </NotificationContext.Provider>
   );
 }
@@ -87,7 +84,7 @@ const NotificationProvider = (props) => {
 
 
 const Notification = ({ message, onClose }) => (
-  <li>
+  <li className="content content-mt">
     {message.text}
     <button onClick={onClose}>
       <FontAwesomeIcon icon={faTimes} />

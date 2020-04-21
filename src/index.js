@@ -9,6 +9,16 @@ import { UserProvider } from './context/UserContext';
 import { EmailProvider } from './context/EmailContext';
 import { NotificationProvider } from './context/NotificationContext';
 
+import { ThemeProvider } from 'styled-components';
+import './index.scss';
+
+const theme = {
+  primary: '#007bff',
+  primaryfc: '#ffffff',
+  bg: '#f7f7f7',
+  error: '#c82333'
+}
+
 const Root = () => {
  const { user } = useContext(UserContext);
 
@@ -25,13 +35,15 @@ const Root = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <NotificationProvider>
-      <UserProvider>
-        <EmailProvider>
-          <Root />
-        </EmailProvider>
-      </UserProvider>
-     </NotificationProvider> 
+    <ThemeProvider theme={theme}>
+      <NotificationProvider>
+        <UserProvider>
+          <EmailProvider>
+            <Root />
+          </EmailProvider>
+        </UserProvider>
+      </NotificationProvider> 
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
